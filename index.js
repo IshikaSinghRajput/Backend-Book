@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import path from "path"
 import bookRoute from "./route/book.routes.js"
 import userRoute from "./route/user.route.js"
 
@@ -31,16 +30,6 @@ mongoose
 //Defining Routes
 app.use("/book", bookRoute);
 app.use("/users", userRoute);
-
-//Deployment
-if(process.env.NODE_ENV === "production"){
-  const dirPath = path.resolve();
-  app.use(express.static("frontend/dist"));
-  app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(dirPath, "frontend", "dist", "index.html"));
-});
-
-}
 
 
 app.listen(PORT, () => {
