@@ -30,6 +30,10 @@ mongoose
 //Defining Routes
 app.use("/book", bookRoute);
 app.use("/users", userRoute);
+app.use(cors({
+  origin: "*",   // or restrict later with your Vercel domain
+  credentials: true
+}));
 
 
 app.listen(PORT, () => {
