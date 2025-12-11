@@ -26,12 +26,24 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
+
 
 //Defining Routes
 app.use("/book", bookRoute);
 app.use("/users", userRoute);
+
+
 app.use(cors({
-  origin: "*",   // or restrict later with your Vercel domain
+  origin: [
+     
+        "http://localhost:5173",
+        "https://project-bookstore-murex.vercel.app"
+
+  ],   // or restrict later with your Vercel domain
   credentials: true
 }));
 
