@@ -1,0 +1,48 @@
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import path from "path"
+import bookRoute from "./route/book.routes.js"
+import userRoute from "./route/user.route.js"
+
+import cors from "cors"
+
+
+const app = express();
+app.use(cors())
+app.use(express.json());
+
+dotenv.config();
+
+const PORT = process.env.PORT || 4000;
+const dbURI = process.env.MongoDBURI;
+
+// Connect to MongoDB
+mongoose
+  .connect(dbURI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
+
+
+//Defining Routes
+app.use("/book", bookRoute);
+app.use("/users", userRoute);
+
+//Deployment
+if(process.env.NODE_ENV === "production"){
+  const dirPath = path.resolve();
+  app.use(express.static("frontend/dist"));
+  app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(dirPath, "frontend", "dist", "index.html"));
+});
+
+}
+
+
+app.listen(PORT, () => {
+  console.log(`Server app listening on port ${PORT}`);
+});
